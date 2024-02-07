@@ -1,5 +1,7 @@
 #include <iostream>
-#include "include/cell.hpp"
+#include "cell.hpp"
+
+Cell::Cell() : row(0), col(0), visited(false) {}
 
 Cell::Cell(int row, int col) : row(row), col(col), visited(false) {}
 
@@ -7,23 +9,28 @@ std::tuple<int, int> Cell::getPosition() const {
     return std::make_tuple(row, col);
 }
 
-std::vector<Cell> Cell::getUnvisitedNeighbors(std::vector<std::vector<Cell>> &maze) {
-    std::vector<Cell> neighbors;
-    if (row > 0 && !maze[row - 1][col].visited) {
-        neighbors.push_back(maze[row - 1][col]);
-    }
-    if (col > 0 && !maze[row][col - 1].visited) {
-        neighbors.push_back(maze[row][col - 1]);
-    }
-    if (row < maze.size() - 1 && !maze[row + 1][col].visited) {
-        neighbors.push_back(maze[row + 1][col]);
-    }
-    if (col < maze[0].size() - 1 && !maze[row][col + 1].visited) {
-        neighbors.push_back(maze[row][col + 1]);
-    }
-    return neighbors;
-}
+std::vector<Cell*> Cell::getUnvisitedNeighbors(std::vector<std::vector<Cell>> &maze) {
+    std::vector<Cell*> neighbours;
 
-void Cell::setVisited() {
-    visited = true;
+    // Right neighbor
+    if (col >= 0 && col + 1 < maze[0].size() && !maze[row][col + 1].visited) {
+        std::cout << "Right neighbor" << std::endl;
+        neighbours.push_back(&maze[row][col + 1]);
+    }
+    // Left neighbor
+    if (col > 0 && col < maze[0].size() && !maze[row][col - 1].visited) {
+        std::cout << "Left neighbor" << std::endl;
+        neighbours.push_back(&maze[row][col - 1]);
+    }
+    // Upper neighbor
+    if (row > 0 && row < maze.size() && !maze[row - 1][col].visited) {
+        std::cout << "Upper neighbor" << std::endl;
+        neighbours.push_back(&maze[row - 1][col]);
+    }
+    // Lower neighbor
+    if (row >= 0 && row + 1 < maze.size() && !maze[row + 1][col].visited) {
+        std::cout << "Lower neighbor" << std::endl;
+        neighbours.push_back(&maze[row + 1][col]);
+    }
+    return neighbours;
 }

@@ -1,25 +1,22 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-#include <iostream>
 #include <vector>
-#include "include/cell.hpp"
+#include "cell.hpp"
 
 class Maze {
     public:
-        Maze(int rows, int cols, bool isWall);
+        int rows;
+        int cols;
+        std::vector<std::vector<Cell>> maze;
+
+        Maze(int rows, int cols);
 
         void generateMaze();
         void printMaze();
         void unsetWall();
 
     private:
-        int rows;
-        int cols;
-        bool isWall;
-
-        std::vector<std::vector<Cell>> maze;
-
         void initializeMaze();
 };
 #endif
