@@ -11,7 +11,10 @@ Maze::Maze(int rows, int cols) : rows(rows), cols(cols), maze(rows, std::vector<
 }
 
 void Maze::generateMaze() {
-    Cell *initial = &maze[0][0];
+    Cell *initial = &maze[0][0];                // Starting cell
+    Cell *final = &maze[rows - 1][cols - 1];    // Ending cell
+    final->walls[3] = false;
+    initial->walls[2] = false;
     dfsMazeGenerator(*initial);
 }
 
