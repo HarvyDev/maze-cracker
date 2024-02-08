@@ -21,6 +21,4 @@ class Maze {
         void dfsMazeGenerator(Cell &cell);
 };
 
-void breakWall(Cell &current, Cell &next);
-
 #endif

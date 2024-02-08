@@ -10,7 +10,7 @@ class Cell {
         int row;
         int col;
         bool visited;
-        bool isWall = true;
+        std::vector<bool> walls;
 
         Cell();
         Cell(int row, int col);
@@ -21,10 +21,10 @@ class Cell {
 
         int getCol() const { return col; }
 
-        void unsetWall() { isWall = false; }
-
-        std::vector<Cell*> getUnvisitedNeighbors(
+        Cell * getRandomUnvisitedNeighbors(
             std::vector<std::vector<Cell>> &maze);
+
+        void removeWalls(Cell &next, std::vector<std::vector<Cell>> &maze);
 };
 
 bool hasUnvisitedCells(std::vector<std::vector<Cell>> &maze);

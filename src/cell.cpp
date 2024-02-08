@@ -1,15 +1,17 @@
 #include <iostream>
 #include "cell.hpp"
+#include <algorithm>
+#include <random>
 
-Cell::Cell() : row(0), col(0), visited(false) {}
+Cell::Cell() : row(0), col(0), visited(false), walls({true, true, true, true}) {}
 
-Cell::Cell(int row, int col) : row(row), col(col), visited(false) {}
+Cell::Cell(int row, int col) : row(row), col(col), visited(false), walls({ true, true, true, true }) {}
 
 std::tuple<int, int> Cell::getPosition() const {
     return std::make_tuple(row, col);
 }
 
-std::vector<Cell*> Cell::getUnvisitedNeighbors(std::vector<std::vector<Cell>> &maze) {
+Cell* Cell::getRandomUnvisitedNeighbors(std::vector<std::vector<Cell>> &maze) {
     std::vector<Cell*> neighbours;
 
     // Right neighbor
@@ -28,16 +30,46 @@ std::vector<Cell*> Cell::getUnvisitedNeighbors(std::vector<std::vector<Cell>> &m
     if (row >= 0 && row + 1 < maze.size() && !maze[row + 1][col].visited) {
         neighbours.push_back(&maze[row + 1][col]);
     }
-    return neighbours;
+
+    // In case there are no more unvisited neighbors
+    if (neighbours.empty()) {
+        return nullptr;
+    }
+
+    // Get a random neighbor
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(neighbours.begin(), neighbours.end(), g);
+
+    return neighbours[0];
 }
 
-bool hasUnvisitedCells(std::vector<std::vector<Cell>> &maze) {
-    for (int r = 0; r < maze.size(); r++) {
-        for (int c = 0; c < maze[0].size(); c++) {
-            if (!maze[r][c].visited) {
-                return true;
-            }
-        }
+void Cell::removeWalls(Cell &next, std::vector<std::vector<Cell>> &maze) {
+    int x = col - next.col;
+
+    // Next cell is to the right
+    if (x == -1) {
+        walls[1] = false;       // Remove right wall
+        next.walls[0] = false;  // Remove left wall from next cell
     }
-    return false;
+
+    // Next cell is to the left
+    else if (x == 1) {
+        walls[0] = false;       // Remove left wall
+        next.walls[1] = false;  // Remove right wall from next cell
+    }
+
+    int y = row - next.row;
+
+    // Next cell is below
+    if (y == -1) {
+        walls[3] = false;       // Remove bottom wall
+        next.walls[2] = false;  // Remove top wall from next cell
+    }
+
+    // Next cell is above
+    else if (y == 1) {
+        walls[2] = false;       // Remove top wall
+        next.walls[3] = false;  // Remove bottom wall from next cell
+    }
 }
