@@ -14,23 +14,30 @@ std::vector<Cell*> Cell::getUnvisitedNeighbors(std::vector<std::vector<Cell>> &m
 
     // Right neighbor
     if (col >= 0 && col + 1 < maze[0].size() && !maze[row][col + 1].visited) {
-        std::cout << "Right neighbor" << std::endl;
         neighbours.push_back(&maze[row][col + 1]);
     }
     // Left neighbor
     if (col > 0 && col < maze[0].size() && !maze[row][col - 1].visited) {
-        std::cout << "Left neighbor" << std::endl;
         neighbours.push_back(&maze[row][col - 1]);
     }
     // Upper neighbor
     if (row > 0 && row < maze.size() && !maze[row - 1][col].visited) {
-        std::cout << "Upper neighbor" << std::endl;
         neighbours.push_back(&maze[row - 1][col]);
     }
     // Lower neighbor
     if (row >= 0 && row + 1 < maze.size() && !maze[row + 1][col].visited) {
-        std::cout << "Lower neighbor" << std::endl;
         neighbours.push_back(&maze[row + 1][col]);
     }
     return neighbours;
+}
+
+bool hasUnvisitedCells(std::vector<std::vector<Cell>> &maze) {
+    for (int r = 0; r < maze.size(); r++) {
+        for (int c = 0; c < maze[0].size(); c++) {
+            if (!maze[r][c].visited) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

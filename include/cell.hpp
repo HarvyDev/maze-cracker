@@ -17,10 +17,6 @@ class Cell {
 
         std::tuple<int, int> getPosition() const;
 
-        void setVisited();
-
-        bool isVisited() const;
-
         int getRow() const { return row; }
 
         int getCol() const { return col; }
@@ -30,5 +26,7 @@ class Cell {
         std::vector<Cell*> getUnvisitedNeighbors(
             std::vector<std::vector<Cell>> &maze);
 };
+
+bool hasUnvisitedCells(std::vector<std::vector<Cell>> &maze);
 
 #endif

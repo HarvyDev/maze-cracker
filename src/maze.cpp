@@ -9,43 +9,24 @@ Maze::Maze(int rows, int cols) : rows(rows), cols(cols), maze(rows, std::vector<
 }
 
 void Maze::generateMaze() {
-    std::srand(std::time(0));           // Generate random seed
-    std::stack<Cell*> cellStack;        // Create a stack to hold the cells
-    Cell *currentCell = &maze[0][0];    // Start at the first cell of the grid
-    currentCell->visited = true;        // Mark the cell as visited
+    maze[0][0].unsetWall();         // Unset the wall of the starting cell
+    dfsMazeGenerator(maze[0][0]);   // Call DFS with the starting cell
+}
 
-    while (true) {
-        std::vector<Cell*> unvisitedNeighbors = currentCell->getUnvisitedNeighbors(maze);
+void Maze::dfsMazeGenerator(Cell &cell) {
+    // Set the current cell as visited
+    cell.visited = true;
 
-        if (!unvisitedNeighbors.empty()) {
-            // Chose random unvisited neighbor
-            Cell* chosen = unvisitedNeighbors[std::rand() % unvisitedNeighbors.size()];
-            chosen->visited = true;
+    if (!hasUnvisitedCells(maze)) {
+        return; // Maze is complete
+    }
 
-            if (chosen->row == currentCell->row) {
-                if (chosen->col > currentCell->col) {
-                    maze[currentCell->row][currentCell->col + 1].isWall = false;
-                } else {
-                    maze[currentCell->row][currentCell->col - 1].isWall = false;
-                }
-            } else {
-                if (chosen->row > currentCell->row) {
-                    maze[currentCell->row + 1][currentCell->col].isWall = false;
-                } else {
-                    maze[currentCell->row - 1][currentCell->col].isWall = false;
-                }
-            }
+    std::vector<Cell*> neighbours = cell.getUnvisitedNeighbors(maze);
 
-            // Push the current cell to the stack
-            cellStack.push(currentCell);
-            currentCell = chosen;
-        } else if (!cellStack.empty()) {
-            // If there are no unvisited neighbors, go back to the previous cell
-            currentCell = cellStack.top();
-            cellStack.pop();
-        } else {
-            // If the stack is empty and there are no unvisited neighbors, the maze is complete
-            break;
+    for (Cell* neighbor : neighbours) {
+        if (!neighbor->visited) {
+            neighbor->unsetWall();
+            dfsMazeGenerator(*neighbor);
         }
     }
 }

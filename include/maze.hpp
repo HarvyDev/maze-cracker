@@ -18,5 +18,9 @@ class Maze {
 
     private:
         void initializeMaze();
+        void dfsMazeGenerator(Cell &cell);
 };
+
+void breakWall(Cell &current, Cell &next);
+
 #endif
