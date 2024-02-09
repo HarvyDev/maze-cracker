@@ -5,20 +5,20 @@
 #include "cell.hpp"
 
 class Maze {
-    public:
-        int rows;
-        int cols;
-        std::vector<std::vector<Cell>> maze;
+public:
+    int rows;
+    int cols;
+    std::vector<std::vector<Cell>> maze;
 
-        Maze(int rows, int cols);
+    Maze(int rows, int cols);
 
-        void generateMaze();
-        void printMaze();
-        void unsetWall();
+    void generateMaze();
+    void printMaze();
+    void unsetWall();
 
-    private:
-        void initializeMaze();
-        void dfsMazeGenerator(Cell &cell);
+private:
+    void initializeMaze();
+    void dfsMazeGenerator(Cell &cell);
 };
 
 #endif

@@ -16,6 +16,7 @@ target_include_directories(maze PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(SOURCES
     src/cell.cpp
     src/maze.cpp
+    src/solver.cpp
 )
 
 # Add source files to the executable
